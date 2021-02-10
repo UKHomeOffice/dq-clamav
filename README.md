@@ -1,4 +1,4 @@
-# Docker ClamAV
+# Docker ClamAV.
 
 Docker container for starting a [ClamAV](http://www.clamav.net/) daemon.
 
