@@ -12,7 +12,7 @@ RUN adduser -S -G clamav -u 1000 clamav_user -h /var/lib/clamav && \
 
 # Configure Clam AV...
 COPY --chown=clamav_user:clamav ./*.conf /etc/clamav/
-COPY --chown=clamav_user:clamav eicar.com /
+COPY --chown=clamav_user:clamav ./eicar.com /
 COPY --chown=clamav_user:clamav ./readyness.sh /
 
 # permissions
