@@ -46,6 +46,7 @@ pipeline:
     image: docker:18.09
     secrets:
       - clamav_repo_token
+      - clamav_repo_username
     environment:
       - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
@@ -62,6 +63,7 @@ pipeline:
   #   image: docker:18.09
   #   secrets:
   #     - clamav_repo_token
+  #     - clamav_repo_username
   #   environment:
   #     - DOCKER_HOST=tcp://172.17.0.1:2375
   #   commands:
@@ -78,6 +80,7 @@ pipeline:
     image: docker:18.09
     secrets:
       - clamav_repo_token
+      - clamav_repo_username
     environment:
       - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
@@ -91,6 +94,7 @@ pipeline:
   #   image: docker:18.09
   #   secrets:
   #     - clamav_repo_token
+  #     - clamav_repo_username
   #   environment:
   #     - DOCKER_HOST=tcp://172.17.0.1:2375
   #   commands:
