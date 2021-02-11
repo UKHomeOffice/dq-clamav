@@ -29,7 +29,7 @@ pipeline:
     commands:
       - docker build -t clamav:$${DRONE_COMMIT_SHA} .
     when:
-      branch: master
+      branch: main
       event: [push, tag]
 
   # build_clamav-rest:
@@ -39,7 +39,7 @@ pipeline:
   #   commands:
   #     - docker build -t go-clamav-rest:$${DRONE_COMMIT_SHA} go-clamav-rest
   #   when:
-  #     branch: master
+  #     branch: main
   #     event: [push, tag]
 
   clamav_to_quay:
@@ -55,7 +55,7 @@ pipeline:
       - docker push quay.io/ukhomeofficedigital/dq-clamav:$${DRONE_COMMIT_SHA}
       - docker push quay.io/ukhomeofficedigital/dq-clamav:latest
     when:
-      branch: master
+      branch: main
       event: push
 
   # clamav-rest_to_quay:
@@ -71,7 +71,7 @@ pipeline:
   #     - docker push quay.io/ukhomeofficedigital/go-clamav-rest:$${DRONE_COMMIT_SHA}
   #     - docker push quay.io/ukhomeofficedigital/go-clamav-rest:latest
   #   when:
-  #     branch: master
+  #     branch: main
   #     event: push
 
   tagged_clamav_to_quay:
