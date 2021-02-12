@@ -2,7 +2,7 @@ pipeline:
   build:
     image: ukhomeoffice/drone-docker
     repo: quay.io/ukhomeofficedigital/dq-haproxy-openssl-sidekick
-    secrets: [ CLAMAV_REPO_USERNAME, CLAMAV_REPO_TOKEN ]
+    secrets: [ clamav_repo_username, clamav_repo_token ]
     registry: quay.io
     force_tag: true
     tags:
