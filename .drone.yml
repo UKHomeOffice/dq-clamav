@@ -85,8 +85,8 @@ pipeline:
       - DOCKER_HOST=tcp://172.17.0.1:2375
     commands:
       - docker login -u=$${CLAMAV_REPO_USERNAME} -p=$${CLAMAV_REPO_TOKEN} quay.io
-      - docker tag clamav:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/dq-clamav:$${DRONE_TAG}
-      - docker push quay.io/ukhomeofficedigital/dq-clamav:$${DRONE_TAG}
+      - docker tag clamav:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/dq-clamav:b$${DRONE_BUILD_NUMBER}
+      - docker push quay.io/ukhomeofficedigital/dq-clamav:b$${DRONE_BUILD_NUMBER}
     when:
       event: tag
 
@@ -99,7 +99,7 @@ pipeline:
   #     - DOCKER_HOST=tcp://172.17.0.1:2375
   #   commands:
   #     - docker login -u=$${CLAMAV_REPO_USERNAME} -p=$${CLAMAV_REPO_TOKEN} quay.io
-  #     - docker tag go-clamav-rest:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/go-clamav-rest:$${DRONE_TAG}
-  #     - docker push quay.io/ukhomeofficedigital/go-clamav-rest:$${DRONE_TAG}
+  #     - docker tag go-clamav-rest:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/go-clamav-rest:$${DRONE_BUILD_NUMBER}
+  #     - docker push quay.io/ukhomeofficedigital/go-clamav-rest:$${DRONE_BUILD_NUMBER}
   #   when:
   #     event: tag
