@@ -1,105 +1,12 @@
 pipeline:
-
-  test_build:
-    image: docker:18.09
-    environment:
-      - DOCKER_HOST=tcp://172.17.0.1:2375
-    commands:
-      - apk add --no-cache bash sed grep bc coreutils curl
-      - ./ci-build.sh
+  build:
+    image: ukhomeoffice/drone-docker
+    repo: quay.io/ukhomeofficedigital/dq-haproxy-openssl-sidekick
+    secrets: [ CLAMAV_REPO_USERNAME, CLAMAV_REPO_TOKEN ]
+    registry: quay.io
+    force_tag: true
+    tags:
+      - ${DRONE_COMMIT_SHA}
+      - b${DRONE_BUILD_NUMBER}
     when:
       event: push
-
-  scan-clamav:
-    image: quay.io/ukhomeofficedigital/anchore-submission:latest
-    image_name: clamav
-    when:
-      event: push
-
-  # scan-clamav-rest:
-  #   image: quay.io/ukhomeofficedigital/anchore-submission:latest
-  #   image_name: go-clamav-rest
-  #   when:
-  #     event: push
-
-  build_clamav:
-    image: docker:18.09
-    environment:
-      - DOCKER_HOST=tcp://172.17.0.1:2375
-    commands:
-      - docker build -t clamav:$${DRONE_COMMIT_SHA} .
-    when:
-      branch: main
-      event: [push, tag]
-
-  # build_clamav-rest:
-  #   image: docker:18.09
-  #   environment:
-  #     - DOCKER_HOST=tcp://172.17.0.1:2375
-  #   commands:
-  #     - docker build -t go-clamav-rest:$${DRONE_COMMIT_SHA} go-clamav-rest
-  #   when:
-  #     branch: main
-  #     event: [push, tag]
-
-  clamav_to_quay:
-    image: docker:18.09
-    secrets:
-      - clamav_repo_token
-      - clamav_repo_username
-    environment:
-      - DOCKER_HOST=tcp://172.17.0.1:2375
-    commands:
-      - docker login -u=$${CLAMAV_REPO_USERNAME} -p=$${CLAMAV_REPO_TOKEN} quay.io
-      - docker tag clamav:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/dq-clamav:$${DRONE_COMMIT_SHA}
-      - docker tag clamav:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/dq-clamav:latest
-      - docker push quay.io/ukhomeofficedigital/dq-clamav:$${DRONE_COMMIT_SHA}
-      - docker push quay.io/ukhomeofficedigital/dq-clamav:latest
-    when:
-      branch: main
-      event: push
-
-  # clamav-rest_to_quay:
-  #   image: docker:18.09
-  #   secrets:
-  #     - clamav_repo_token
-  #     - clamav_repo_username
-  #   environment:
-  #     - DOCKER_HOST=tcp://172.17.0.1:2375
-  #   commands:
-  #     - docker login -u=$${CLAMAV_REPO_USERNAME} -p=$${CLAMAV_REPO_TOKEN} quay.io
-  #     - docker tag go-clamav-rest:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/go-clamav-rest:$${DRONE_COMMIT_SHA}
-  #     - docker tag go-clamav-rest:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/go-clamav-rest:latest
-  #     - docker push quay.io/ukhomeofficedigital/go-clamav-rest:$${DRONE_COMMIT_SHA}
-  #     - docker push quay.io/ukhomeofficedigital/go-clamav-rest:latest
-  #   when:
-  #     branch: main
-  #     event: push
-
-  tagged_clamav_to_quay:
-    image: docker:18.09
-    secrets:
-      - clamav_repo_token
-      - clamav_repo_username
-    environment:
-      - DOCKER_HOST=tcp://172.17.0.1:2375
-    commands:
-      - docker login -u=$${CLAMAV_REPO_USERNAME} -p=$${CLAMAV_REPO_TOKEN} quay.io
-      - docker tag clamav:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/dq-clamav:b$${DRONE_BUILD_NUMBER}
-      - docker push quay.io/ukhomeofficedigital/dq-clamav:b$${DRONE_BUILD_NUMBER}
-    when:
-      event: tag
-
-  # tagged_clamav-rest_to_quay:
-  #   image: docker:18.09
-  #   secrets:
-  #     - clamav_repo_token
-  #     - clamav_repo_username
-  #   environment:
-  #     - DOCKER_HOST=tcp://172.17.0.1:2375
-  #   commands:
-  #     - docker login -u=$${CLAMAV_REPO_USERNAME} -p=$${CLAMAV_REPO_TOKEN} quay.io
-  #     - docker tag go-clamav-rest:$${DRONE_COMMIT_SHA} quay.io/ukhomeofficedigital/go-clamav-rest:$${DRONE_BUILD_NUMBER}
-  #     - docker push quay.io/ukhomeofficedigital/go-clamav-rest:$${DRONE_BUILD_NUMBER}
-  #   when:
-  #     event: tag
